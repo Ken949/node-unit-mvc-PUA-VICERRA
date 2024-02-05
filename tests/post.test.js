@@ -221,6 +221,21 @@ describe('Post controller', () => {
             sinon.assert.calledWith(res.json, sinon.match({ content: req.body.content }));
             sinon.assert.calledWith(res.json, sinon.match({ author: req.body.author }));
         })
+
+        it('should return 404 for non existent object', () => {
+            //Arrange
+            expectedResult = req.body;
+
+            findPostStub = sinon.stub(PostModel, 'findPost').yields(null, null);
+
+            //Act
+            PostController.findPost(req, res);
+
+            //Assert
+            sinon.assert.calledWith(PostModel.findPost, req.body);
+            sinon.assert.calledWith(res.status, (404));
+            sinon.assert.calledOnce(res.status(404).end);
+        })
  
     })
 });

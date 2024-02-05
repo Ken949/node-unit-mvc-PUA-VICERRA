@@ -25,7 +25,9 @@ PostController.update = (req, res) => {
 };
 
 PostController.findPost = (req, res) => {
-
+    return PostModel.findPost(req.body, (err, post) => {
+        return res.json(post);
+    })
 };
 
 PostController.getAllPosts = (req, res) => {
