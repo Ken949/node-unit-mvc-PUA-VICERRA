@@ -13,7 +13,9 @@ PostController.create = (req, res) => {
 };
 
 PostController.update = (req, res) => {
-
+    return PostModel.updatePost(req.body, (err, post) => {
+        return res.json(post);
+    })
 };
 
 PostController.findPost = (req, res) => {

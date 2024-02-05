@@ -17,3 +17,7 @@ exports.createPost = (obj, next) => {
         next(err, post)
     }) 
 }
+
+exports.updatePost = (obj, next) => {
+    
+}
