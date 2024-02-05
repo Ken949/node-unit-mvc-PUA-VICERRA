@@ -150,6 +150,31 @@ describe('Post controller', () => {
             sinon.assert.calledOnce(res.status(404).end);
         });
         
+        it('should return 500 for server error', () => {
+            // Arrange
+
+            let req = {
+                body: {
+                    author: 'stswenguser',
+                    title: 'My first test post',
+                    content: 'Random content'
+                },
+                params: {
+                    _id: '507asdghajsdhjgasd'
+                }
+            };
+            expectedResult = req.body;
+
+            updatePostStub = sinon.stub(PostModel, 'updatePost').yields(error);
+
+            // Act
+            PostController.update(req, res);
+
+            // Assert
+            sinon.assert.calledWith(PostModel.updatePost, req.body);
+            sinon.assert.calledWith(res.status, (500));
+            sinon.assert.calledOnce(res.status(500).end);
+        });
     });
 
     describe('findPost', () => {
