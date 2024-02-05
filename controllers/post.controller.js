@@ -14,7 +14,11 @@ PostController.create = (req, res) => {
 
 PostController.update = (req, res) => {
     return PostModel.updatePost(req.body, (err, post) => {
-        return res.json(post);
+        if (post == null){
+            return res.status(404).end()
+        } else{
+            return res.json(post);
+        }
     })
 };
 

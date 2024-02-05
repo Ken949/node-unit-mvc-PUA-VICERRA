@@ -19,5 +19,5 @@ exports.createPost = (obj, next) => {
 }
 
 exports.updatePost = (obj, next) => {
-    
+    //skeleton function, mocked in post.test.js
 }
