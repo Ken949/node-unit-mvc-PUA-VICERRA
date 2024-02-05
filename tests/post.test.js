@@ -236,6 +236,22 @@ describe('Post controller', () => {
             sinon.assert.calledWith(res.status, (404));
             sinon.assert.calledOnce(res.status(404).end);
         })
+
+        it('should return 500 for server error', () => {
+            //Arrange
+            expectedResult = req.body;
+
+            findPostStub = sinon.stub(PostModel, 'findPost').yields(null, null);
+
+            //Act
+            PostController.findPost(req, res);
+
+            //Assert
+            sinon.assert.calledWith(PostModel.findPost, req.body);
+            sinon.assert.calledWith(res.status, (500));
+            sinon.assert.calledOnce(res.status(500).end);
+        })
+ 
  
     })
 });
