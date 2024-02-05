@@ -81,7 +81,48 @@ describe('Post controller', () => {
     });
 
     describe('update', () => {
+        var updatePostStub;
 
+        beforeEach(() => {
+            // before every test case setup first
+            res = {
+                json: sinon.spy(),
+                status: sinon.stub().returns({ end: sinon.spy() })
+            };
+        });
+
+        afterEach(() => {
+            // executed after the test case
+            updatePostStub.restore();
+        });
+
+        //Creation successfull, returns updated object
+        it('should return the updated post object', () => {
+            // Arrange
+
+            let req = {
+                body: {
+                    author: 'stswenguser',
+                    title: 'My first test post',
+                    content: 'Random content'
+                },
+                params: {
+                    _id: '507asdghajsdhjgasd'
+                }
+            };
+            expectedResult = req.body;
+
+            updatePostStub = sinon.stub(PostModel, 'updatePost').yields(null, expectedResult);
+
+            // Act
+            PostController.update(req, res);
+
+            // Assert
+            sinon.assert.calledWith(PostModel.updatePost, req.body);
+            sinon.assert.calledWith(res.json, sinon.match({ title: req.body.title }));
+            sinon.assert.calledWith(res.json, sinon.match({ content: req.body.content }));
+            sinon.assert.calledWith(res.json, sinon.match({ author: req.body.author }));
+        });
     });
 
     describe('findPost', () => {
