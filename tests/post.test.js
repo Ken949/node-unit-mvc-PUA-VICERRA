@@ -241,7 +241,7 @@ describe('Post controller', () => {
             //Arrange
             expectedResult = req.body;
 
-            findPostStub = sinon.stub(PostModel, 'findPost').yields(null, null);
+            findPostStub = sinon.stub(PostModel, 'findPost').yields(error);
 
             //Act
             PostController.findPost(req, res);

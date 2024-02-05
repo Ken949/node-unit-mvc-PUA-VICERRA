@@ -25,12 +25,12 @@ PostController.update = (req, res) => {
 };
 
 PostController.findPost = (req, res) => {
-    
     return PostModel.findPost(req.body, (err, post) => {
-        if (post == null){
+        if (err){
+            return res.status(500).end()
+        } else if (post == null) {
             return res.status(404).end()
-        }
-        else {
+        } else {
             return res.json(post);
         }
     })
