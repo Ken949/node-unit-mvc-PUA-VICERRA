@@ -123,9 +123,36 @@ describe('Post controller', () => {
             sinon.assert.calledWith(res.json, sinon.match({ content: req.body.content }));
             sinon.assert.calledWith(res.json, sinon.match({ author: req.body.author }));
         });
+
+        it('should return 404 for non-existing post object', () => {
+            // Arrange
+
+            let req = {
+                body: {
+                    author: 'stswenguser',
+                    title: 'My first test post',
+                    content: 'Random content'
+                },
+                params: {
+                    _id: '507asdghajsdhjgasd'
+                }
+            };
+            expectedResult = req.body;
+
+            updatePostStub = sinon.stub(PostModel, 'updatePost').yields(null, null);
+
+            // Act
+            PostController.update(req, res);
+
+            // Assert
+            sinon.assert.calledWith(PostModel.updatePost, req.body);
+            sinon.assert.calledWith(res.status, (404));
+            sinon.assert.calledOnce(res.status(404), end);
+        });
+        
     });
 
     describe('findPost', () => {
-
+        
     })
 });
