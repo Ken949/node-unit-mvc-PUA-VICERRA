@@ -179,5 +179,48 @@ describe('Post controller', () => {
 
     describe('findPost', () => {
         
+        let req = {
+            body: {
+                author: 'stswenguser',
+                title: 'My first test post',
+                content: 'Random content'
+            },
+            params: {
+                _id: '507asdghajsdhjgasd'
+            }
+        };
+        
+        var findPostStub;
+
+        beforeEach(() => {
+            // before every test case setup first
+            res = {
+                json: sinon.spy(),
+                status: sinon.stub().returns({ end: sinon.spy() })
+            };
+        });
+
+        afterEach(() => {
+            // executed after the test case
+            findPostStub.restore();
+        });
+        
+        it('should return the found post', () => {
+
+            //Arrange
+            expectedResult = req.body;
+
+            findPostStub = sinon.stub(PostModel, 'findPost').yields(null, expectedResult);
+
+            //Act
+            PostController.findPost(req, res);
+
+            //Assert
+            sinon.assert.calledWith(PostModel.findPost, req.body);
+            sinon.assert.calledWith(res.json, sinon.match({ title: req.body.title }));
+            sinon.assert.calledWith(res.json, sinon.match({ content: req.body.content }));
+            sinon.assert.calledWith(res.json, sinon.match({ author: req.body.author }));
+        })
+ 
     })
 });
